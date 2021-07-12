@@ -6,6 +6,20 @@
 //Declaration des fonctions
 void init_nb_aleatoire();
 int nb_aleatoire(int max);
+
+//Structure de donnees
+typedef struct une_case {
+   int x;
+   int y;
+} Case;
+typedef struct navire {
+   int sens;
+   Case premiere_case;
+   int taille;
+} Navire;
+//Plateau
+//Grille
+
 //Implementation des fonctions
 void init_nb_aleatoire() {
    srandom(time(NULL));
