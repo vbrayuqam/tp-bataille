@@ -131,6 +131,20 @@ int est_valide(int **plateau, int taille_plateau, Navire *nav) {
    }
    return valide;
 }
+void proposition_joueur(int **plateau, int **prop, int *nb_touche, int *nb_joue, int *nb_touche_nav, int taille_plateau) {
+   int x;
+   int y;
+   printf("\nAux canons!\n");
+   do {
+      printf("\nVeuillez saisir une valeur entre 0 (haut) et %d (bas) pour l'axe laterale : ", taille_plateau - 1);
+      scanf("%d", &x);
+   } while (x < 0 || x >= taille_plateau);
+   do {
+      printf("\nVeuillez saisir une valeur entre 0 (gauche) et %d (droite) pour l'axe horizontale : ", taille_plateau - 1);
+      scanf("%d", &y);
+   } while (y < 0 || y >= taille_plateau);
+}
+
 void initialisation_plateau(int **plateau, int taille_plateau) {
    for (int i = 0; i < taille_plateau; i++) {
       for (int j = 0; j < taille_plateau; j++) {
@@ -173,6 +187,9 @@ int main(int argc, char *argv[]) {
    init_nb_aleatoire();
    gestion_argument(argc);
    int validation;
+   int nb_joue = 0;
+   int nb_touche = 0;
+   int nb_touche_nav[7];
    int taille_plateau = demande_taille_plateau(); 
    Navire navires[7];
    
@@ -234,12 +251,16 @@ int main(int argc, char *argv[]) {
       validation = est_valide(plateau, taille_plateau, navires);
    } while (validation == 0);
 
-
+   //Boucle de jeu
+   do {
+      proposition_joueur(plateau, prop, &nb_touche, &nb_joue, nb_touche_nav, taille_plateau);
+      //comparaison_grille();
+      //affichage_grille();
+   } while (nb_touche != 0);
 
 
    //Affichage de fin de partie
    affichage_plateau(plateau, taille_plateau);
-   affichage_prop(prop, taille_plateau);
 
    //Liberer la memoire
    for (int i = 0; i < taille_plateau; i++) {
