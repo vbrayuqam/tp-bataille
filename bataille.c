@@ -23,9 +23,8 @@ int demande_taille_plateau();
 Navire creer_navire(int taille, int taille_plateau);
 void assigner_navires(Navire navires[7], int taille_plateau);
 int est_valide(int **plateau, int taille_plateau, Navire *nav);
-void initialisation_plateau(int **plateau, int taille_plateau);
 void proposition_joueur(int **plateau, int **prop, int *nb_touche, int *nb_joue, int *nb_touche_nav, int taille_plateau);
-void rafraichir_plateau(int **plateau, int taille_plateau);
+void initialisation_plateau(int **plateau, int taille_plateau);
 void affichage_plateau(int **plateau, int taille_plateau);
 
 //Implementation des fonctions
@@ -130,7 +129,7 @@ int est_valide(int **plateau, int taille_plateau, Navire *nav) {
    }
    return valide;
 }
-void rafraichir_plateau(int **plateau, int taille_plateau) {
+void initialisation_plateau(int **plateau, int taille_plateau) {
    for (int i = 0; i < taille_plateau; i++) {
       for (int j = 0; j < taille_plateau; j++) {
          plateau[i][j] = 0;
@@ -207,7 +206,7 @@ int main(int argc, char *argv[]) {
    }
    
    do {
-      rafraichir_plateau(plateau, taille_plateau); 
+      initialisation_plateau(plateau, taille_plateau); 
       assigner_navires(navires, taille_plateau);
       validation = est_valide(plateau, taille_plateau, navires);
    } while (validation == 0);
