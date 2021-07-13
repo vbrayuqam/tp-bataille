@@ -22,7 +22,7 @@ void gestion_argument(int nombre_argument);
 int demande_taille_plateau();
 Navire creer_navire(int taille, int taille_plateau);
 int est_valide(int **plateau, int taille_plateau, Navire *nav);
-void initialisation_plateau(int **plateau, int taille_plateau, Navire *nav);
+void initialisation_plateau(int **plateau, int taille_plateau);
 void proposition_joueur(int **plateau, int **prop, int *nb_touche, int *nb_joue, int *nb_touche_nav, int taille_plateau);
 void affichage_plateau(int **plateau, int taille_plateau);
 
@@ -59,5 +59,11 @@ int main(int argc, char *argv[]) {
    init_nb_aleatoire();
    gestion_argument(argc);
    int taille_plateau = demande_taille_plateau();
+   
+   //Creer le plateau
+   //initialisation_plateau();
+   //Boucle de jeu
+   //Liberer la memoire
+   //Affichage du message de fin
    return 0;
 }
