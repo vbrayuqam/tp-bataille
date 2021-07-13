@@ -28,8 +28,9 @@ void initialisation_plateau(int **plateau, int taille_plateau);
 void affichage_plateau(int **plateau, int taille_plateau);
 void affichage_grille(char **grille, int taille_plateau);
 void affichage_prop(int **grille, int taille_plateau);
-void comparaison_grille(int **plateau, int **prop, char **grille, int taille_plateau);
+void comparaison_grille(int **plateau, int **prop, char **grille, int taille_plateau, int *nb_touche_nav);
 void initialisation_grille(char **grille, int taille_plateau);
+void comp_nav_coule(int **plateau, char **grille, int taille_plateau, int *nb_touche_nav);
 
 //Implementation des fonctions
 void init_nb_aleatoire() {
@@ -212,7 +213,7 @@ void affichage_prop(int **prop, int taille_plateau) {
       printf("\n");
    }
 }
-void comparaison_grille(int **plateau, int **prop, char **grille, int taille_plateau) {
+void comparaison_grille(int **plateau, int **prop, char **grille, int taille_plateau, int *nb_touche_nav) {
    for (int i = 0; i < taille_plateau; i ++) {
       for (int j = 0; j < taille_plateau; j ++) {
          if (prop[i][j] == -1) {
@@ -220,6 +221,20 @@ void comparaison_grille(int **plateau, int **prop, char **grille, int taille_pla
 	    if (plateau[i][j] != 0) {
                grille[i][j] = 'X';
             }
+	 }
+      }
+   }
+   comp_nav_coule(plateau, grille, taille_plateau, nb_touche_nav);
+}
+void comp_nav_coule(int **plateau, char **grille, int taille_plateau, int *nb_touche_nav) {
+   for (int n = 2; n < 7; n ++) {
+      for (int i = 0; i < taille_plateau; i++) {
+         for (int j = 0; j < taille_plateau; j++) {
+	    if (nb_touche_nav[n] == n) {
+	       if (plateau[i][j] == n) {
+	          grille[i][j] = 'C';
+	       }
+	    }
 	 }
       }
    }
@@ -309,12 +324,12 @@ int main(int argc, char *argv[]) {
    //Boucle de jeu
    do {
       proposition_joueur(plateau, prop, nb_touche_ptr, nb_joue_ptr, nb_touche_nav, taille_plateau);
-      comparaison_grille(plateau, prop, grille, taille_plateau);
+      comparaison_grille(plateau, prop, grille, taille_plateau, nb_touche_nav);
       affichage_grille(grille, taille_plateau);
    } while (nb_touche != 20);
 
    //Affichage de fin de partie
-   printf("\n\nPartie termine!\n\n")
+   printf("\n\nPartie termine!\n\n");
    affichage_plateau(plateau, taille_plateau);
    printf("\nMerci et a la prochaine!\n");
 
