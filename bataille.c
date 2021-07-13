@@ -26,6 +26,8 @@ int est_valide(int **plateau, int taille_plateau, Navire *nav);
 void proposition_joueur(int **plateau, int **prop, int *nb_touche, int *nb_joue, int *nb_touche_nav, int taille_plateau);
 void initialisation_plateau(int **plateau, int taille_plateau);
 void affichage_plateau(int **plateau, int taille_plateau);
+void affichage_grille(char **grille, int taille_plateau);
+void affichage_prop(int **grille, int taille_plateau);
 
 //Implementation des fonctions
 void init_nb_aleatoire() {
@@ -138,7 +140,7 @@ void initialisation_plateau(int **plateau, int taille_plateau) {
 
 }
 void affichage_plateau(int **plateau, int taille_plateau) {
-   printf("\n");
+   printf("\nVoice le plateau de jeu initial:\n");
    for (int i = 0; i < taille_plateau; i++) {
       for (int j = 0; j < taille_plateau; j++) {
          printf("%d", plateau[i][j]);
@@ -146,6 +148,26 @@ void affichage_plateau(int **plateau, int taille_plateau) {
       printf("\n");
    }
 }
+void affichage_grille(char **grille, int taille_plateau) {
+   printf("\nVoici l'etat actuel de la grille:\n");
+   for (int i = 0; i < taille_plateau; i++) {
+      for (int j = 0; j < taille_plateau; j++) {
+         printf("%c", grille[i][j]);
+      }
+      printf("\n");
+   }
+}
+void affichage_prop(int **prop, int taille_plateau) {
+   printf("\nVoici l'ensemble de vos proposition durant le jeu:\n");
+   for (int i = 0; i < taille_plateau; i++) {
+      for (int j = 0; j < taille_plateau; j++) {
+         printf("%d", prop[i][j]);
+      }
+      printf("\n");
+   }
+}
+
+
 //Main
 int main(int argc, char *argv[]) {
    init_nb_aleatoire();
@@ -205,16 +227,20 @@ int main(int argc, char *argv[]) {
       exit(-1);
    }
    
+   //Boucle d'initiation du plateau
    do {
       initialisation_plateau(plateau, taille_plateau); 
       assigner_navires(navires, taille_plateau);
       validation = est_valide(plateau, taille_plateau, navires);
    } while (validation == 0);
 
+
+
+
+   //Affichage de fin de partie
    affichage_plateau(plateau, taille_plateau);
-   //initialisation_plateau();
-   //Boucle de jeu
-   
+   affichage_prop(prop, taille_plateau);
+
    //Liberer la memoire
    for (int i = 0; i < taille_plateau; i++) {
       free(plateau[i]);
