@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
    int taille_plateau = demande_taille_plateau();
    
    int erreur = 0;
-   int compteur = 0;
+   
    int **plateau = calloc(taille_plateau, sizeof(int*));
    if (!plateau) {
       perror("\nErreur d'allocation de la memoire, fin du programme.\n");
@@ -76,18 +76,42 @@ int main(int argc, char *argv[]) {
    if(erreur) {
       perror("\nErreur d'allocation de la memoire, fin du programme.\n");
       exit(-1);
-   } else {
-      for (int i = 0; i < taille_plateau; i++) {
-         for (int j = 0; j < taille_plateau; j++) {
-	    plateau[i][j] = compteur++;
-	    printf("%d", plateau[i][j]);
-	 }
-	 printf("\n");
+   }
+   
+   int **prop = calloc(taille_plateau, sizeof(int*));
+   if (!prop) {
+      perror("\nErreur d'allocation de la memoire, fin du programme.\n");
+      exit(-1);
+   }
+   for (int i = 0; i < taille_plateau; i++) {
+      prop[i] = calloc(taille_plateau, sizeof(int));
+      if (!prop[i]) {
+         erreur = 1;
+         break;
       }
    }
-   //plateau
-   //grille
-   //prop   
+   if(erreur) {
+      perror("\nErreur d'allocation de la memoire, fin du programme.\n");
+      exit(-1);
+   }
+   
+   char **grille = calloc(taille_plateau, sizeof(char*));
+   if (!grille) {
+      perror("\nErreur d'allocation de la memoire, fin du programme.\n");
+      exit(-1);
+   }
+   for (int i = 0; i < taille_plateau; i++) {
+      grille[i] = calloc(taille_plateau, sizeof(char));
+      if (!grille[i]) {
+         erreur = 1;
+         break;
+      }
+   }
+   if(erreur) {
+      perror("\nErreur d'allocation de la memoire, fin du programme.\n");
+      exit(-1);
+   }
+
    //initialisation_plateau();
    //Boucle de jeu
    //Liberer la memoire
@@ -97,5 +121,14 @@ int main(int argc, char *argv[]) {
       free(plateau[i]);
    }
    free(plateau);
+   for (int i = 0; i < taille_plateau; i++) {
+      free(prop[i]);
+   }
+   free(prop);
+   for (int i = 0; i < taille_plateau; i++) {
+      free(grille[i]);
+   }
+   free(grille);
+
    return 0;
 }
