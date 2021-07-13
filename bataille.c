@@ -53,14 +53,16 @@ int demande_taille_plateau() {
    }
    return taille_plateau;
 }
+
+         
 //Main
 int main(int argc, char *argv[]) {
    init_nb_aleatoire();
    gestion_argument(argc);
-   int taille_plateau = demande_taille_plateau();
-   
+   int taille_plateau = demande_taille_plateau(); 
+
+   //A voir plus tard
    int erreur = 0;
-   
    int **plateau = calloc(taille_plateau, sizeof(int*));
    if (!plateau) {
       perror("\nErreur d'allocation de la memoire, fin du programme.\n");
@@ -70,14 +72,13 @@ int main(int argc, char *argv[]) {
       plateau[i] = calloc(taille_plateau, sizeof(int));
       if (!plateau[i]) {
          erreur = 1;
-	 break;
+         break;
       }
    }
    if(erreur) {
       perror("\nErreur d'allocation de la memoire, fin du programme.\n");
       exit(-1);
    }
-   
    int **prop = calloc(taille_plateau, sizeof(int*));
    if (!prop) {
       perror("\nErreur d'allocation de la memoire, fin du programme.\n");
@@ -94,7 +95,6 @@ int main(int argc, char *argv[]) {
       perror("\nErreur d'allocation de la memoire, fin du programme.\n");
       exit(-1);
    }
-   
    char **grille = calloc(taille_plateau, sizeof(char*));
    if (!grille) {
       perror("\nErreur d'allocation de la memoire, fin du programme.\n");
@@ -111,16 +111,21 @@ int main(int argc, char *argv[]) {
       perror("\nErreur d'allocation de la memoire, fin du programme.\n");
       exit(-1);
    }
+   //A voir plus tard
+   
 
+     
+
+    
+
+   
+
+   
    //initialisation_plateau();
    //Boucle de jeu
    //Liberer la memoire
    //Affichage du message de fin
    //Free section
-   for (int i = 0; i < taille_plateau; i++) {
-      free(plateau[i]);
-   }
-   free(plateau);
    for (int i = 0; i < taille_plateau; i++) {
       free(prop[i]);
    }
