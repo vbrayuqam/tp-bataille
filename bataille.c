@@ -28,6 +28,8 @@ void initialisation_plateau(int **plateau, int taille_plateau);
 void affichage_plateau(int **plateau, int taille_plateau);
 void affichage_grille(char **grille, int taille_plateau);
 void affichage_prop(int **grille, int taille_plateau);
+void comparaison_grille(int **plateau, int **prop, char **grille);
+void initialisation_grille(char **grille, int taille_plateau);
 
 //Implementation des fonctions
 void init_nb_aleatoire() {
@@ -182,7 +184,6 @@ void initialisation_plateau(int **plateau, int taille_plateau) {
          plateau[i][j] = 0;
       }
    }
-
 }
 void affichage_plateau(int **plateau, int taille_plateau) {
    printf("\nVoice le plateau de jeu initial:\n");
@@ -211,8 +212,15 @@ void affichage_prop(int **prop, int taille_plateau) {
       printf("\n");
    }
 }
-
-
+//void comparaison_grille(int **plateau, int **prop, char **grille) {
+//}
+void initialisation_grille(char **grille, int taille_plateau) {
+   for (int i = 0; i < taille_plateau; i++) {
+      for (int j = 0; j < taille_plateau; j++) {
+         grille[i][j] = '.';
+      }
+   }
+}
 //Main
 int main(int argc, char *argv[]) {
    init_nb_aleatoire();
@@ -228,7 +236,7 @@ int main(int argc, char *argv[]) {
    }
    int taille_plateau = demande_taille_plateau(); 
    Navire navires[7];
-   
+
    //Allocations dynamiques
    int erreur = 0;
    int **plateau = calloc(taille_plateau, sizeof(int*));
@@ -286,13 +294,13 @@ int main(int argc, char *argv[]) {
       assigner_navires(navires, taille_plateau);
       validation = est_valide(plateau, taille_plateau, navires);
    } while (validation == 0);
+   initialisation_grille(grille, taille_plateau);
 
    //Boucle de jeu
    do {
       affichage_plateau(plateau, taille_plateau);
-
       proposition_joueur(plateau, prop, nb_touche_ptr, nb_joue_ptr, nb_touche_nav, taille_plateau);
-      //comparaison_grille();
+      //comparaison_grille(plateau, prop, grille);
       //affichage_grille();
    } while (nb_touche != 20);
 
