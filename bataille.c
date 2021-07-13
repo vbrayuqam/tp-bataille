@@ -104,17 +104,30 @@ void affichage_grille(char **grille, int taille_plateau);
 */
 void affichage_prop(int **grille, int taille_plateau);
 /**
-* Propose au joueur d'effectuer un tir et en verifie la validite.
+* Compare le plateau, le prop et la grille pour en determiner le contenu.
 *
 * @param  plateau  Matrice de nombres entier representant le plateau de jeu
 * @param  prop  Matrice de nombres entier representant les tirs effectues par le joueur
-* @param  nb_touche  Le nombre de tirs ayant touches
-* @param  nb_joue  Le nombre de tirs joues
-* @param  nb_touche_nav  Un tableau contenant le nobre de tirs effectues sur chaque navire
+* @param  grille  Matrice de char representant les tirs du joueur
 * @param  taille_plateau  La taille du plateau de jeu
+* @param  nb_touche_nav  Un tableau contenant le nobre de tirs effectues sur chaque navire
 */
 void comparaison_grille(int **plateau, int **prop, char **grille, int taille_plateau, int *nb_touche_nav);
+/**
+* Initialise la grille avec une valeur generique.
+* 
+* @param  grille  Matrice de char representant les tirs du joueur
+* @param  taille_plateau  La taille du plateau de jeu
+*/
 void initialisation_grille(char **grille, int taille_plateau);
+/**
+* Compare le nombre de tirs de chaque navire avec la grille pour determiner et afficher les bateaus coules.
+*
+* @param  plateau  Matrice de nombres entier representant le plateau de jeu
+* @param  grille  Matrice de char representant les tirs du joueur
+* @param  taille_plateau  La taille du plateau de jeu
+* @param  nb_touche_nav  Un tableau contenant le nobre de tirs effectues sur chaque navire
+*/
 void comp_nav_coule(int **plateau, char **grille, int taille_plateau, int *nb_touche_nav);
 
 //Implementation des fonctions
