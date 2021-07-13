@@ -53,15 +53,22 @@ int demande_taille_plateau() {
    }
    return taille_plateau;
 }
-
+Navire creer_navire(int taille, int taille_plateau) {
+   Navire nav;
+   nav.taille = taille;
+   nav.sens = nb_aleatoire(4);
+   nav.premiere_case.x = nb_aleatoire(taille_plateau);
+   nav.premiere_case.y = nb_aleatoire(taille_plateau);
+   return nav;
+}
          
 //Main
 int main(int argc, char *argv[]) {
    init_nb_aleatoire();
    gestion_argument(argc);
    int taille_plateau = demande_taille_plateau(); 
+   Navire navires[7];
 
-   //A voir plus tard
    int erreur = 0;
    int **plateau = calloc(taille_plateau, sizeof(int*));
    if (!plateau) {
@@ -111,21 +118,17 @@ int main(int argc, char *argv[]) {
       perror("\nErreur d'allocation de la memoire, fin du programme.\n");
       exit(-1);
    }
-   //A voir plus tard
    
-
-     
-
-    
-
-   
-
-   
+   //Creation des navires
    //initialisation_plateau();
    //Boucle de jeu
    //Liberer la memoire
    //Affichage du message de fin
-   //Free section
+  
+   for (int i = 0; i < taille_plateau; i++) {
+      free(plateau[i]);
+   }
+   free(plateau);
    for (int i = 0; i < taille_plateau; i++) {
       free(prop[i]);
    }
