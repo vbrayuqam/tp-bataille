@@ -21,6 +21,7 @@ int nb_aleatoire(int max);
 void gestion_argument(int nombre_argument);
 int demande_taille_plateau();
 Navire creer_navire(int taille, int taille_plateau);
+void assigner_navires(Navire navires[7], int taille_plateau);
 int est_valide(int **plateau, int taille_plateau, Navire *nav);
 void initialisation_plateau(int **plateau, int taille_plateau);
 void proposition_joueur(int **plateau, int **prop, int *nb_touche, int *nb_joue, int *nb_touche_nav, int taille_plateau);
@@ -61,14 +62,51 @@ Navire creer_navire(int taille, int taille_plateau) {
    nav.premiere_case.y = nb_aleatoire(taille_plateau);
    return nav;
 }
-         
+void assigner_navires(Navire navires[7], int taille_plateau) {
+   int compteur = 2;
+   while (compteur < 7) {
+      navires[compteur] = creer_navire(compteur, taille_plateau);
+      compteur++;
+   }
+}
+int est_valide(int **plateau, int taille_plateau, Navire *nav) {
+   int valide = 1;
+   for (int i = 2; i < 7; i++) {
+      if (plateau[nav[i].premiere_case.x][nav[i].premiere_case.y] == 1) {
+         valide = 0;
+      }
+      plateau[nav[i].premiere_case.x][nav[i].premiere_case.y] = 1;
+      switch (nav[i].sens) {
+         case 0:
+            for (int j = 1; j < i; j++) {
+	       if(!(i + j == taille_plateau)) {
+	          if (plateau[nav[i].premiere_case.x + j][nav[i].premiere_case.y] == 1) {
+                     valide = 0;
+                  }
+                  plateau[nav[i].premiere_case.x + j][nav[i].premiere_case.y]
+               }
+
+	    }
+            break;	    
+	 case 1:
+	    break;
+	 case 2:
+	    break;
+	 case 3:
+	    break;
+      }
+   }
+   return valide;
+}
+
 //Main
 int main(int argc, char *argv[]) {
    init_nb_aleatoire();
    gestion_argument(argc);
    int taille_plateau = demande_taille_plateau(); 
    Navire navires[7];
-
+   
+   //Allocations dynamiques
    int erreur = 0;
    int **plateau = calloc(taille_plateau, sizeof(int*));
    if (!plateau) {
@@ -118,13 +156,14 @@ int main(int argc, char *argv[]) {
       perror("\nErreur d'allocation de la memoire, fin du programme.\n");
       exit(-1);
    }
-   
-   //Creation des navires
+  
+   assigner_navires(navires, taille_plateau);
+   int valide = est_valide(plateau, taille_plateau, navires);
+   printf("\nValide : %d\n", valide);
    //initialisation_plateau();
    //Boucle de jeu
+   
    //Liberer la memoire
-   //Affichage du message de fin
-  
    for (int i = 0; i < taille_plateau; i++) {
       free(plateau[i]);
    }
