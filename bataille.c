@@ -53,17 +53,49 @@ int demande_taille_plateau() {
    }
    return taille_plateau;
 }
-
 //Main
 int main(int argc, char *argv[]) {
    init_nb_aleatoire();
    gestion_argument(argc);
    int taille_plateau = demande_taille_plateau();
    
-   //Creer le plateau
+   int erreur = 0;
+   int compteur = 0;
+   int **plateau = calloc(taille_plateau, sizeof(int*));
+   if (!plateau) {
+      perror("\nErreur d'allocation de la memoire, fin du programme.\n");
+      exit(-1);
+   }
+   for (int i = 0; i < taille_plateau; i++) {
+      plateau[i] = calloc(taille_plateau, sizeof(int));
+      if (!plateau[i]) {
+         erreur = 1;
+	 break;
+      }
+   }
+   if(erreur) {
+      perror("\nErreur d'allocation de la memoire, fin du programme.\n");
+      exit(-1);
+   } else {
+      for (int i = 0; i < taille_plateau; i++) {
+         for (int j = 0; j < taille_plateau; j++) {
+	    plateau[i][j] = compteur++;
+	    printf("%d", plateau[i][j]);
+	 }
+	 printf("\n");
+      }
+   }
+   //plateau
+   //grille
+   //prop   
    //initialisation_plateau();
    //Boucle de jeu
    //Liberer la memoire
    //Affichage du message de fin
+   //Free section
+   for (int i = 0; i < taille_plateau; i++) {
+      free(plateau[i]);
+   }
+   free(plateau);
    return 0;
 }
