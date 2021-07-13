@@ -25,6 +25,7 @@ void assigner_navires(Navire navires[7], int taille_plateau);
 int est_valide(int **plateau, int taille_plateau, Navire *nav);
 void initialisation_plateau(int **plateau, int taille_plateau);
 void proposition_joueur(int **plateau, int **prop, int *nb_touche, int *nb_joue, int *nb_touche_nav, int taille_plateau);
+void rafraichir_plateau(int **plateau, int taille_plateau);
 void affichage_plateau(int **plateau, int taille_plateau);
 
 //Implementation des fonctions
@@ -44,9 +45,9 @@ int demande_taille_plateau() {
    int taille_plateau;
    bool non_valide = true;
    while (non_valide) {
-      printf("\nVeuillez entrez la taille du plateau (nombre entier entre 10 et 20) : ");
+      printf("\nVeuillez entrez la taille du plateau (nombre entier entre 12 et 30) : ");
       scanf("%d", &taille_plateau);
-      if (taille_plateau < 10 || taille_plateau > 20) {
+      if (taille_plateau < 12 || taille_plateau > 30) {
          printf("\nMauvaise valeur!\n");
       } else {
          non_valide = false;
@@ -78,31 +79,79 @@ int est_valide(int **plateau, int taille_plateau, Navire *nav) {
       plateau[nav[i].premiere_case.x][nav[i].premiere_case.y] = 1;
       switch (nav[i].sens) {
          case 0:
-            for (int j = 1; j < i; j++) {
-	       if(!(i + j == taille_plateau)) {
-	          if (plateau[nav[i].premiere_case.x + j][nav[i].premiere_case.y] == 1) {
+            for (int j = 1; j < i; j++) { 
+	       if(!(nav[i].premiere_case.x - j < 0)) {
+	          if (plateau[nav[i].premiere_case.x - j][nav[i].premiere_case.y] == 1) {
                      valide = 0;
                   }
-                  plateau[nav[i].premiere_case.x + j][nav[i].premiere_case.y]
-               }
-
+                  plateau[nav[i].premiere_case.x - j][nav[i].premiere_case.y] = 1;
+               } else {
+	          valide = 0;
+	       }
 	    }
             break;	    
 	 case 1:
+	    for (int j = 1; j < i; j++) {
+               if(!(nav[i].premiere_case.y + j >= taille_plateau)) {
+                  if (plateau[nav[i].premiere_case.x][nav[i].premiere_case.y + j] == 1) {
+                     valide = 0;
+                  }
+                  plateau[nav[i].premiere_case.x][nav[i].premiere_case.y + j] = 1;
+               } else {
+                  valide = 0;
+               }
+            }
 	    break;
 	 case 2:
+	    for (int j = 1; j < i; j++) {
+               if(!(nav[i].premiere_case.x + j >= taille_plateau)) {
+                  if (plateau[nav[i].premiere_case.x + j][nav[i].premiere_case.y] == 1) {
+                     valide = 0;
+                  }
+                  plateau[nav[i].premiere_case.x + j][nav[i].premiere_case.y] = 1;
+               } else {
+                  valide = 0;
+               }
+            }
 	    break;
 	 case 3:
+	    for (int j = 1; j < i; j++) {
+               if(!(nav[i].premiere_case.y - j < 0)) {
+                  if (plateau[nav[i].premiere_case.x][nav[i].premiere_case.y - j] == 1) {
+                     valide = 0;
+                  }
+                  plateau[nav[i].premiere_case.x][nav[i].premiere_case.y - j] = 1;
+               } else {
+                  valide = 0;
+               }
+            }
 	    break;
       }
    }
    return valide;
 }
+void rafraichir_plateau(int **plateau, int taille_plateau) {
+   for (int i = 0; i < taille_plateau; i++) {
+      for (int j = 0; j < taille_plateau; j++) {
+         plateau[i][j] = 0;
+      }
+   }
 
+}
+void affichage_plateau(int **plateau, int taille_plateau) {
+   printf("\n");
+   for (int i = 0; i < taille_plateau; i++) {
+      for (int j = 0; j < taille_plateau; j++) {
+         printf("%d", plateau[i][j]);
+      }
+      printf("\n");
+   }
+}
 //Main
 int main(int argc, char *argv[]) {
    init_nb_aleatoire();
    gestion_argument(argc);
+   int validation;
    int taille_plateau = demande_taille_plateau(); 
    Navire navires[7];
    
@@ -156,10 +205,14 @@ int main(int argc, char *argv[]) {
       perror("\nErreur d'allocation de la memoire, fin du programme.\n");
       exit(-1);
    }
-  
-   assigner_navires(navires, taille_plateau);
-   int valide = est_valide(plateau, taille_plateau, navires);
-   printf("\nValide : %d\n", valide);
+   
+   do {
+      rafraichir_plateau(plateau, taille_plateau); 
+      assigner_navires(navires, taille_plateau);
+      validation = est_valide(plateau, taille_plateau, navires);
+   } while (validation == 0);
+
+   affichage_plateau(plateau, taille_plateau);
    //initialisation_plateau();
    //Boucle de jeu
    
