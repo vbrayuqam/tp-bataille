@@ -157,10 +157,15 @@ void proposition_joueur(int **plateau, int **prop, int *nb_touche, int *nb_joue,
       if (prop[x][y] == -1) {
          printf("\nDeja joue!\n");
       } else {
-         printf("\nTouche!\n");
 	 *nb_touche += 1;
 	 nb_touche_nav[plateau[x][y]] += 1;
 	 prop[x][y] = -1;
+      }
+	 if (nb_touche_nav[plateau[x][y]] == plateau[x][y]) {
+	    printf("\nCoule!\n");
+	 } else {
+	    printf("\nTouche!\n");
+	 
       }
    } else {
       if (prop[x][y] == -1) {
@@ -284,11 +289,6 @@ int main(int argc, char *argv[]) {
 
    //Boucle de jeu
    do {
-      printf("\nnb jouer: %d\n", nb_joue);
-      printf("\nnb toucher: %d\n", nb_touche);
-      for (int i = 2; i < 7; i++) {
-         printf("nav %d touche %d\n", i, nb_touche_nav[i]);
-      }
       affichage_plateau(plateau, taille_plateau);
 
       proposition_joueur(plateau, prop, nb_touche_ptr, nb_joue_ptr, nb_touche_nav, taille_plateau);
