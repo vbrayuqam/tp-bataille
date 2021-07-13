@@ -47,7 +47,10 @@ int demande_taille_plateau() {
    bool non_valide = true;
    while (non_valide) {
       printf("\nVeuillez entrez la taille du plateau (nombre entier entre 12 et 30) : ");
-      scanf("%d", &taille_plateau);
+      if (scanf("%d", &taille_plateau) != 1) {
+         perror("\nValeur illegale, fin du programme\n");
+	 exit(-1);
+      }
       if (taille_plateau < 12 || taille_plateau > 30) {
          printf("\nMauvaise valeur!\n");
       } else {
@@ -74,18 +77,18 @@ void assigner_navires(Navire navires[7], int taille_plateau) {
 int est_valide(int **plateau, int taille_plateau, Navire *nav) {
    int valide = 1;
    for (int i = 2; i < 7; i++) {
-      if (plateau[nav[i].premiere_case.x][nav[i].premiere_case.y] == 1) {
+      if (plateau[nav[i].premiere_case.x][nav[i].premiere_case.y] != 0) {
          valide = 0;
       }
-      plateau[nav[i].premiere_case.x][nav[i].premiere_case.y] = 1;
+      plateau[nav[i].premiere_case.x][nav[i].premiere_case.y] = i;
       switch (nav[i].sens) {
          case 0:
             for (int j = 1; j < i; j++) { 
 	       if(!(nav[i].premiere_case.x - j < 0)) {
-	          if (plateau[nav[i].premiere_case.x - j][nav[i].premiere_case.y] == 1) {
+	          if (plateau[nav[i].premiere_case.x - j][nav[i].premiere_case.y] != 0) {
                      valide = 0;
                   }
-                  plateau[nav[i].premiere_case.x - j][nav[i].premiere_case.y] = 1;
+                  plateau[nav[i].premiere_case.x - j][nav[i].premiere_case.y] = i;
                } else {
 	          valide = 0;
 	       }
@@ -94,10 +97,10 @@ int est_valide(int **plateau, int taille_plateau, Navire *nav) {
 	 case 1:
 	    for (int j = 1; j < i; j++) {
                if(!(nav[i].premiere_case.y + j >= taille_plateau)) {
-                  if (plateau[nav[i].premiere_case.x][nav[i].premiere_case.y + j] == 1) {
+                  if (plateau[nav[i].premiere_case.x][nav[i].premiere_case.y + j] != 0) {
                      valide = 0;
                   }
-                  plateau[nav[i].premiere_case.x][nav[i].premiere_case.y + j] = 1;
+                  plateau[nav[i].premiere_case.x][nav[i].premiere_case.y + j] = i;
                } else {
                   valide = 0;
                }
@@ -106,10 +109,10 @@ int est_valide(int **plateau, int taille_plateau, Navire *nav) {
 	 case 2:
 	    for (int j = 1; j < i; j++) {
                if(!(nav[i].premiere_case.x + j >= taille_plateau)) {
-                  if (plateau[nav[i].premiere_case.x + j][nav[i].premiere_case.y] == 1) {
+                  if (plateau[nav[i].premiere_case.x + j][nav[i].premiere_case.y] != 0) {
                      valide = 0;
                   }
-                  plateau[nav[i].premiere_case.x + j][nav[i].premiere_case.y] = 1;
+                  plateau[nav[i].premiere_case.x + j][nav[i].premiere_case.y] = i;
                } else {
                   valide = 0;
                }
@@ -118,10 +121,10 @@ int est_valide(int **plateau, int taille_plateau, Navire *nav) {
 	 case 3:
 	    for (int j = 1; j < i; j++) {
                if(!(nav[i].premiere_case.y - j < 0)) {
-                  if (plateau[nav[i].premiere_case.x][nav[i].premiere_case.y - j] == 1) {
+                  if (plateau[nav[i].premiere_case.x][nav[i].premiere_case.y - j] != 0) {
                      valide = 0;
                   }
-                  plateau[nav[i].premiere_case.x][nav[i].premiere_case.y - j] = 1;
+                  plateau[nav[i].premiere_case.x][nav[i].premiere_case.y - j] = i;
                } else {
                   valide = 0;
                }
@@ -137,14 +140,37 @@ void proposition_joueur(int **plateau, int **prop, int *nb_touche, int *nb_joue,
    printf("\nAux canons!\n");
    do {
       printf("\nVeuillez saisir une valeur entre 0 (haut) et %d (bas) pour l'axe laterale : ", taille_plateau - 1);
-      scanf("%d", &x);
+      if (scanf("%d", &x) != 1) {
+         perror("\nValeur illegale, fin du programme\n");
+         exit(-1);
+      }
    } while (x < 0 || x >= taille_plateau);
    do {
       printf("\nVeuillez saisir une valeur entre 0 (gauche) et %d (droite) pour l'axe horizontale : ", taille_plateau - 1);
-      scanf("%d", &y);
+      if (scanf("%d", &y) != 1) {
+         perror("\nValeur illegale, fin du programme\n");
+         exit(-1);
+      }
    } while (y < 0 || y >= taille_plateau);
+   *nb_joue += 1;
+   if (plateau[x][y] != 0) {
+      if (prop[x][y] == -1) {
+         printf("\nDeja joue!\n");
+      } else {
+         printf("\nTouche!\n");
+	 *nb_touche += 1;
+	 nb_touche_nav[plateau[x][y]] += 1;
+	 prop[x][y] = -1;
+      }
+   } else {
+      if (prop[x][y] == -1) {
+         printf("\nDeja joue!\n");
+      } else {
+         printf("\nA l'eau!\n");
+         prop[x][y] = -1;
+      } 
+   }    
 }
-
 void initialisation_plateau(int **plateau, int taille_plateau) {
    for (int i = 0; i < taille_plateau; i++) {
       for (int j = 0; j < taille_plateau; j++) {
@@ -188,8 +214,13 @@ int main(int argc, char *argv[]) {
    gestion_argument(argc);
    int validation;
    int nb_joue = 0;
+   int *nb_joue_ptr = &nb_joue;
    int nb_touche = 0;
+   int *nb_touche_ptr = &nb_touche;
    int nb_touche_nav[7];
+   for (int i = 0; i < 7; i++) {
+      nb_touche_nav[i] = 0;
+   }
    int taille_plateau = demande_taille_plateau(); 
    Navire navires[7];
    
@@ -253,10 +284,17 @@ int main(int argc, char *argv[]) {
 
    //Boucle de jeu
    do {
-      proposition_joueur(plateau, prop, &nb_touche, &nb_joue, nb_touche_nav, taille_plateau);
+      printf("\nnb jouer: %d\n", nb_joue);
+      printf("\nnb toucher: %d\n", nb_touche);
+      for (int i = 2; i < 7; i++) {
+         printf("nav %d touche %d\n", i, nb_touche_nav[i]);
+      }
+      affichage_plateau(plateau, taille_plateau);
+
+      proposition_joueur(plateau, prop, nb_touche_ptr, nb_joue_ptr, nb_touche_nav, taille_plateau);
       //comparaison_grille();
       //affichage_grille();
-   } while (nb_touche != 0);
+   } while (nb_touche != 20);
 
 
    //Affichage de fin de partie
