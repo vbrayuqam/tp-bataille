@@ -5,10 +5,16 @@
 #include <stdbool.h>
 
 //Structure de donnees
+/**
+* Structure representant une case dans une matrice.
+*/
 typedef struct une_case {
    int x;
    int y;
 } Case;
+/**
+* Structure representant une navire.
+*/
 typedef struct navire {
    int sens;
    Case premiere_case;
@@ -16,18 +22,97 @@ typedef struct navire {
 } Navire;
 
 //Declaration des fonctions
+/**
+* Initie la generation de nombres aleatoires.
+*/
 void init_nb_aleatoire();
+/**
+* Genere un nombre aleatoire sous une valeur desiree.
+*
+* @param  max  La valeur au dessus de la valeur maximum desiree.
+*/
 int nb_aleatoire(int max);
+/**
+* S'assure qu'aucun argument ne soit donne au programme.
+*
+* @param  nombre_argument  Le nombre d'arguments donnes au programme.
+*/
 void gestion_argument(int nombre_argument);
+/**
+* Demande une taille a l'utilisateur afin de generer le plateau de jeu.
+*/
 int demande_taille_plateau();
+/**
+* Creer une navire pour le jeu.
+*
+* @param  taille  La taille du navire
+* @param  taille_plateau La taille du plateau de jeu
+*/
 Navire creer_navire(int taille, int taille_plateau);
+/**
+* Assigne les navires a une position dans le plateau.
+*
+* @param  navires  Tableau contenant les navires
+* @param  taille_plateau  La taille du plateau de jeu
+*/
 void assigner_navires(Navire navires[7], int taille_plateau);
+/**
+* Positionne les navires dans le plateau et confirme que leurs positions sont valides.
+*
+* @param  plateau  Matrice de nombres entiers representant le plateau de jeu
+* @param  taille_plateau  La taille du plateau de jeu
+* @param  nav  Pointeur vers le tableau de navires utilises
+*/
 int est_valide(int **plateau, int taille_plateau, Navire *nav);
+/**
+* Propose au joueur d'effectuer un tir et en verifie la validite.
+*
+* @param  plateau  Matrice de nombres entier representant le plateau de jeu
+* @param  prop  Matrice de nombres entier representant les tirs effectues par le joueur
+* @param  nb_touche  Le nombre de tirs ayant touches
+* @param  nb_joue  Le nombre de tirs joues
+* @param  nb_touche_nav  Un tableau contenant le nobre de tirs effectues sur chaque navire
+* @param  taille_plateau  La taille du plateau de jeu
+*/
 void proposition_joueur(int **plateau, int **prop, int *nb_touche, int *nb_joue, int *nb_touche_nav, int taille_plateau);
+/**
+* Initialise le plateau de jeu.
+*
+* @param  plateau  Matrice de nombres entier representant le plateau de jeu
+* @param  taille_plateau  La taille du plateau de jeu
+*/
 void initialisation_plateau(int **plateau, int taille_plateau);
+/**
+* Affiche le plateau de jeu.
+*
+* @param  plateau  Matrice de nombres entier representant le plateau de jeu
+* @param  taille_plateau  La taille du plateau de jeu
+*/
 void affichage_plateau(int **plateau, int taille_plateau);
+/**
+* Affiche la grille des tirs.
+*
+* @param  grille  Matrice de char representant les tirs du joueur
+* @param  taille_plateau  La taille du plateau de jeu
+*/
 void affichage_grille(char **grille, int taille_plateau);
+/**
+* Affiche la matrice des propositions faites au joueurs.
+*
+* @param  prop  Matrice de nombres entier representant les tirs effectues par le joueur
+* @param  taille_plateau  La taille du plateau de jeu
+*/
 void affichage_prop(int **grille, int taille_plateau);
+/**
+* Propose au joueur d'effectuer un tir et en verifie la validite.
+*
+* @param  plateau  Matrice de nombres entier representant le plateau de jeu
+* @param  prop  Matrice de nombres entier representant les tirs effectues par le joueur
+* @param  nb_touche  Le nombre de tirs ayant touches
+* @param  nb_joue  Le nombre de tirs joues
+* @param  nb_touche_nav  Un tableau contenant le nobre de tirs effectues sur chaque navire
+* @param  taille_plateau  La taille du plateau de jeu
+*/
 void comparaison_grille(int **plateau, int **prop, char **grille, int taille_plateau, int *nb_touche_nav);
 void initialisation_grille(char **grille, int taille_plateau);
 void comp_nav_coule(int **plateau, char **grille, int taille_plateau, int *nb_touche_nav);
