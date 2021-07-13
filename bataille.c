@@ -48,12 +48,12 @@ int demande_taille_plateau() {
    int taille_plateau;
    bool non_valide = true;
    while (non_valide) {
-      printf("\nVeuillez entrez la taille du plateau (nombre entier entre 12 et 30) : ");
+      printf("\nVeuillez entrez la taille du plateau (nombre entier entre 8 et 30) : ");
       if (scanf("%d", &taille_plateau) != 1) {
          perror("\nValeur illegale, fin du programme\n");
 	 exit(-1);
       }
-      if (taille_plateau < 12 || taille_plateau > 30) {
+      if (taille_plateau < 8 || taille_plateau > 30) {
          printf("\nMauvaise valeur!\n");
       } else {
          non_valide = false;
@@ -308,15 +308,15 @@ int main(int argc, char *argv[]) {
 
    //Boucle de jeu
    do {
-      affichage_plateau(plateau, taille_plateau);
       proposition_joueur(plateau, prop, nb_touche_ptr, nb_joue_ptr, nb_touche_nav, taille_plateau);
       comparaison_grille(plateau, prop, grille, taille_plateau);
       affichage_grille(grille, taille_plateau);
    } while (nb_touche != 20);
 
-
    //Affichage de fin de partie
+   printf("\n\nPartie termine!\n\n")
    affichage_plateau(plateau, taille_plateau);
+   printf("\nMerci et a la prochaine!\n");
 
    //Liberer la memoire
    for (int i = 0; i < taille_plateau; i++) {
