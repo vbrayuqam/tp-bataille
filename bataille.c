@@ -28,7 +28,7 @@ void initialisation_plateau(int **plateau, int taille_plateau);
 void affichage_plateau(int **plateau, int taille_plateau);
 void affichage_grille(char **grille, int taille_plateau);
 void affichage_prop(int **grille, int taille_plateau);
-void comparaison_grille(int **plateau, int **prop, char **grille);
+void comparaison_grille(int **plateau, int **prop, char **grille, int taille_plateau);
 void initialisation_grille(char **grille, int taille_plateau);
 
 //Implementation des fonctions
@@ -212,8 +212,18 @@ void affichage_prop(int **prop, int taille_plateau) {
       printf("\n");
    }
 }
-//void comparaison_grille(int **plateau, int **prop, char **grille) {
-//}
+void comparaison_grille(int **plateau, int **prop, char **grille, int taille_plateau) {
+   for (int i = 0; i < taille_plateau; i ++) {
+      for (int j = 0; j < taille_plateau; j ++) {
+         if (prop[i][j] == -1) {
+	    grille[i][j] = 'O';
+	    if (plateau[i][j] != 0) {
+               grille[i][j] = 'X';
+            }
+	 }
+      }
+   }
+}
 void initialisation_grille(char **grille, int taille_plateau) {
    for (int i = 0; i < taille_plateau; i++) {
       for (int j = 0; j < taille_plateau; j++) {
@@ -300,8 +310,8 @@ int main(int argc, char *argv[]) {
    do {
       affichage_plateau(plateau, taille_plateau);
       proposition_joueur(plateau, prop, nb_touche_ptr, nb_joue_ptr, nb_touche_nav, taille_plateau);
-      //comparaison_grille(plateau, prop, grille);
-      //affichage_grille();
+      comparaison_grille(plateau, prop, grille, taille_plateau);
+      affichage_grille(grille, taille_plateau);
    } while (nb_touche != 20);
 
 
