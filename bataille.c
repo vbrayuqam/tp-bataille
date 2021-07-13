@@ -3,10 +3,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-//Declaration des fonctions
-void init_nb_aleatoire();
-int nb_aleatoire(int max);
-
 //Structure de donnees
 typedef struct une_case {
    int x;
@@ -17,6 +13,16 @@ typedef struct navire {
    Case premiere_case;
    int taille;
 } Navire;
+
+//Declaration des fonctions
+void init_nb_aleatoire();
+int nb_aleatoire(int max);
+Navire creer_navire(int taille, int taille_plateau);
+int est_valide(int **plateau, int taille_plateau, Navire *nav);
+void initialisation_plateau(int **plateau, int taille_plateau, Navire *nav);
+void proposition_joueur(int **plateau, int **prop, int *nb_touche, int *nb_joue, int *nb_touche_nav, int taille_plateau);
+void affichage_plateau(int **plateau, int taille_plateau);
+
 //Plateau
 //Grille
 
